@@ -13,10 +13,9 @@ let shuffledDeck;
 // Deal a deck
 //dealRound();
 
-
 function dealRound () {
     resetTable();
-    shuffledDeck = shuffle(myDeck);
+    shuffledDeck = shuffle(JSON.parse(JSON.stringify(myDeck)));
 
     playerHand = [ shuffledDeck.pop(), shuffledDeck.pop() ];
     addACardOnCanvas(playerHand[0], false, "player-container");

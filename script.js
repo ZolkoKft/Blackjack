@@ -29,17 +29,24 @@ function dealRound () {
 
 // get card
 function getACard(member, hide, container) {
-    member.push(shuffledDeck.pop());
-    addACardOnCanvas(member[member.length-1], hide, container);
+    if (shuffledDeck.length > 0 ) {
+        member.push(shuffledDeck.pop());
+        addACardOnCanvas(member[member.length-1], hide, container);
+    }
 }
 
 function getACardPlayer() {
     getACard(playerHand, false, "player-container")
 }
 
+function getAHiddenCardDealer() {
+    getACard(dealerHand, true, "dealer-container")
+}
+
 function dealerGame() {
     while (countRank(dealerHand) <= 17 ) {
-        getACard(dealerHand, true, "dealer-container");
+        //getACard(dealerHand, true, "dealer-container");
+        getAHiddenCardDealer();
     }
     showDealerCards();
 }
@@ -81,7 +88,8 @@ function countRank(member) {
 
         for (let i = 0; i < numberOfAces; i++) {
             
-            if ((+rank + +11) > 21 ) {
+            let x = +11 + +numberOfAces - +1;
+            if ((+rank + +x) > 21 ) {
                 rank = +rank + +1;
             }
             else {
@@ -101,22 +109,22 @@ function announcementResult() {
     let dealerDif = blakJack - dealerRank;
 
     if (playerDif < 0 && dealerDif < 0 ) {
-        resultRound = "draw";
+        resultRound = 1; //"draw";
     }
     else if (playerDif < 0) {
-        resultRound = "loose";
+        resultRound = 0; //"loose";
     }
     else if (dealerDif < 0) {
-        resultRound = "win";
+        resultRound = 2; //"win";
     }
     else if (playerDif === dealerDif) {
-        resultRound = "draw";
+        resultRound = 1;//"draw";
     }
     else if (playerDif < dealerDif) {
-        resultRound = "win";
+        resultRound = 2;//"win";
     }
     else if (playerDif > dealerDif) {
-        resultRound = "loose";
+        resultRound = 0;//"loose";
     }
 }
 
@@ -124,7 +132,17 @@ function getResult() {
     dealerGame();
     announcementResult();
     //document.getElementById("logo-container").innerText = resultRound;
-    showResultWindow();
+    setTimeout(function() {
+        showResultWindow();
+        }, 0);
+}
+
+function showResultWindow (){
+    $('.hover_bkgr_fricc').show();
+    let dict = ["Loose", "play Draw", "Win"][resultRound];
+    let resText = "You "+ dict +"!";
+    document.getElementById("popup-title").innerText = resText;
+
 }
 
 function addACardOnCanvas(element, hide, container) {
@@ -181,28 +199,3 @@ function shuffle(array) {
   
     return array;
 }
-
-$(window).on("load", function() {
-    $('.hover_bkgr_fricc').show();
-});
-
-function showResultWindow (){
-    $('.hover_bkgr_fricc').show();
-    let resText = "You "+ resultRound +" !";
-    document.getElementById("popup-title").innerText = resText;
-
-}
-
-// $(".trigger_popup_fricc").on('click', function(){
-//     $('.hover_bkgr_fricc').show();
-// });
-
-$('.hover_bkgr_fricc').on('click', function(){
-    $('.hover_bkgr_fricc').hide();
-    dealRound();
-});
-
-$('.popupCloseButton').on('click', function(){
-    $('.hover_bkgr_fricc').hide();
-    dealRound();
-});

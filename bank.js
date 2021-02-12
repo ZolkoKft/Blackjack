@@ -10,8 +10,12 @@ function updateAccountAmount(result) {
     switch(result) {
         case 1:
             totalAccount = +totalAccount + +riskAmount;
+            break;
         case 2:
             totalAccount = +totalAccount + +riskAmount + +riskAmount;
+            break;
+        deafault:
+            break;
     }
 
     document.getElementById("inAmount").disabled = false;

@@ -16,6 +16,10 @@ function updateAccountAmount(result) {
 
     document.getElementById("inAmount").disabled = false;
     document.getElementById("btnStart").disabled = false;
+
+    document.getElementById("btnGetACard").disabled = true;
+    document.getElementById("btnStop").disabled = true;
+
     document.getElementById("pAllAmount").innerText = totalAccount;
 }
 
@@ -23,6 +27,9 @@ function Start() {
     riskAmount = document.getElementById("inAmount").value; 
     document.getElementById("inAmount").disabled = true;
     document.getElementById("btnStart").disabled = true;
+
+    document.getElementById("btnGetACard").disabled = false;
+
     totalAccount = +totalAccount - +riskAmount;
     document.getElementById("pAllAmount").innerText = totalAccount;
     dealRound();

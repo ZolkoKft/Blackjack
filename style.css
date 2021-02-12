@@ -59,7 +59,58 @@ body {
     height: 100px;
 }
 
+#player-container, #dealer-container {
+    height:115.5px;
+}
 
 #control-container {
     padding: 10px 50px 0 10px;
+    display:flex;
+    align-items: center;
+    justify-content:flex-start;
+}
+
+#control-container > button {
+    margin-left: 5px;
+}
+
+#inAmount, #pAllAmount {
+    display: inline;
+    width: 100px;
+    height: 98%;
+    background-color: rgba(129, 129, 129, 0.5);
+    /* border-color: lightgray solid 4px; */
+    color:lightgray;
+    text-align: right; 
+}
+
+#pAllAmount {
+    display: block;
+    margin: 0;
+    height: 34px;
+}
+
+.currencyinput {
+    position: relative;
+    color:lightgray;
+    margin-left: 15px;
+    font-size: 22px;
+}
+.currencyinput input {
+    padding-left: 18px;
+}
+
+.currencyinput p {
+    padding-left:18px;
+}
+
+.currencyinput:before {
+    position: absolute;
+    top: 0;
+    content:"$";
+    left: 5px;
+}
+
+#btnStart {
+    margin-right: 40px;
 }

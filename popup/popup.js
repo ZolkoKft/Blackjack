@@ -9,10 +9,12 @@ $(window).on("load", function() {
 
 $('.hover_bkgr_fricc').on('click', function(){
     $('.hover_bkgr_fricc').hide();
-    dealRound();
+    //dealRound();
+    resetTable();
 });
 
 $('.popupCloseButton').on('click', function(){
     $('.hover_bkgr_fricc').hide();
-    dealRound();
+    //dealRound();
+    resetTable();
 });

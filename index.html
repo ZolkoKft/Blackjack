@@ -34,6 +34,9 @@
             <div id="control-container">
                 <button id="btnGetACard" onclick="getACardPlayer()" type="button" class="btn btn-primary">Get a card</button>
                 <button id="btnStop" onclick="getResult()" type="button" class="btn btn-danger">Stop</button>
+                <span class="currencyinput"><input type="number" name="inAmount" id="inAmount" class="form-control"></span>
+                <button id="btnStart" onclick="Start()" type="button" class="btn btn-success">Start</button>
+                <span class="currencyinput"><p id="pAllAmount" class="form-control"></p></span>
             </div>
         </div>
     </div>
@@ -41,6 +44,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="./popup/popup.js"></script>
     <script src="./loader/loader.js"></script>
-    <script src="script.js"></script>
+    <script src="blackjack.js"></script>
+    <script src="bank.js"></script>
 </body>
 </html>

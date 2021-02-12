@@ -5,26 +5,44 @@ let myDeck = JSON.parse(readJSON('cards.json'));
 let countDeck = Object.keys(myDeck).length;
 
 
-let dealerHand;
-let playerHand;
+let dealerHand = new Array();
+let playerHand = new Array();
 
 let shuffledDeck;
+
+let soundGetCard  = new Audio('./sounds/get-card.mp3');
+var soundCashRegister = new Audio('./sounds/cash-register.mp3');
 
 // Deal a deck
 //dealRound();
 
-function dealRound () {
+async function dealRound () {
     resetTable();
+    document.getElementById("btnStop").disabled = true;
+    document.getElementById("btnGetACard").disabled = true;
+
     shuffledDeck = shuffle(JSON.parse(JSON.stringify(myDeck)));
 
-    playerHand = [ shuffledDeck.pop(), shuffledDeck.pop() ];
-    addACardOnCanvas(playerHand[0], false, "player-container");
-    addACardOnCanvas(playerHand[1], false, "player-container");
+    getACardPlayer();
+    await sleep(500);
+    getACardPlayer();
+    await sleep(500);
+
+    getAHiddenCardDealer();
+    await sleep(500);
+    getAHiddenCardDealer();
+
+    document.getElementById("btnStop").disabled = false;
+    document.getElementById("btnGetACard").disabled = false;
+    
+    // playerHand = [ shuffledDeck.pop(), shuffledDeck.pop() ];
+    // addACardOnCanvas(playerHand[0], false, "player-container");
+    // addACardOnCanvas(playerHand[1], false, "player-container");
 
 
-    dealerHand = [ shuffledDeck.pop(), shuffledDeck.pop() ];
-    addACardOnCanvas(dealerHand[0], true, "dealer-container");
-    addACardOnCanvas(dealerHand[1], true, "dealer-container");
+    // dealerHand = [ shuffledDeck.pop(), shuffledDeck.pop() ];
+    // addACardOnCanvas(dealerHand[0], true, "dealer-container");
+    // addACardOnCanvas(dealerHand[1], true, "dealer-container");
 }
 
 // get card
@@ -32,6 +50,7 @@ function getACard(member, hide, container) {
     if (shuffledDeck.length > 0 ) {
         member.push(shuffledDeck.pop());
         addACardOnCanvas(member[member.length-1], hide, container);
+        soundGetCard.play();
     }
 }
 
@@ -43,12 +62,18 @@ function getAHiddenCardDealer() {
     getACard(dealerHand, true, "dealer-container")
 }
 
-function dealerGame() {
+function sleep(ms) {
+    return new Promise(resolve =>setTimeout(resolve, ms));
+}
+
+async function dealerGame() {
     while (countRank(dealerHand) <= 17 ) {
         //getACard(dealerHand, true, "dealer-container");
+
         getAHiddenCardDealer();
+        await sleep(1000);
     }
-    showDealerCards();
+    
 }
 
 function showDealerCards() {
@@ -128,13 +153,14 @@ function announcementResult() {
     }
 }
 
-function getResult() {
-    dealerGame();
+async function getResult() {
+    await dealerGame();
+    showDealerCards();
     announcementResult();
     //document.getElementById("logo-container").innerText = resultRound;
     setTimeout(function() {
         showResultWindow();
-        }, 0);
+        }, 1000);
 }
 
 function showResultWindow (){
@@ -142,7 +168,10 @@ function showResultWindow (){
     let dict = ["Loose", "play Draw", "Win"][resultRound];
     let resText = "You "+ dict +"!";
     document.getElementById("popup-title").innerText = resText;
-
+    if (resultRound === 2) {
+        soundCashRegister.play();
+    }
+    updateAccountAmount(resultRound);
 }
 
 function addACardOnCanvas(element, hide, container) {
@@ -161,10 +190,14 @@ function addACardOnCanvas(element, hide, container) {
 }
 
 function resetTable (){
+    dealerHand = [];
+    playerHand = [];
+
     let delaerCards = document.getElementById("dealer-container").querySelectorAll(".card-image");
     delaerCards.forEach(element => {
         element.remove();
     });
+    
     let playerCards = document.getElementById("player-container").querySelectorAll(".card-image");
     playerCards.forEach(element => {
         element.remove();
@@ -179,7 +212,7 @@ function readJSON(file) {
     request.send(null);
     if (request.status == 200)
         return request.responseText;
-};
+}
 
 function shuffle(array) {
     var currentIndex = array.length, temporaryValue, randomIndex;

@@ -60,7 +60,7 @@ body {
 }
 
 #player-container, #dealer-container {
-    height:115.5px;
+    min-height:115.5px;
 }
 
 #control-container {
